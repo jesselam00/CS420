@@ -1,5 +1,5 @@
 # CS420
-- Fall 2022
+CS 420 Software Engineering Fall 2022
 
 ### Requirements Document
 - Present a demo in lab on September 13-14
