@@ -2,8 +2,8 @@
 CS 420 Software Engineering Fall 2022
 
 ### Requirements Document
-- Present a demo in lab on September 13-14
-- Due on September 18
+- Present a Sprint 1 milestone demo in lab on September 13-14
+- Due on September 22
 
 ### Specifications Document
 - Due on October 2
@@ -15,4 +15,4 @@ CS 420 Software Engineering Fall 2022
 - Due on November 20
 
 ### Final Project
-- Due ???
+- Week of December 5 - 9 (Week before finals) 
