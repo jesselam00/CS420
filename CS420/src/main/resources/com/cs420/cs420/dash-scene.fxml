@@ -1,6 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
 
-
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" />
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="420.0" layoutY="14.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Farm Dashboard">
+         <font>
+            <Font size="20.0" />
+         </font></Label>
+      <SplitPane dividerPositions="0.4429460580912863" layoutX="29.0" layoutY="59.0" prefHeight="684.0" prefWidth="966.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="682.0" prefWidth="372.0">
+               <children>
+                  <SplitPane dividerPositions="0.7279411764705882" orientation="VERTICAL" prefHeight="682.0" prefWidth="424.0">
+                    <items>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <Label layoutX="46.0" layoutY="14.0" prefHeight="45.0" prefWidth="331.0" style="-fx-alignment: center;" text="Items and Item Containers">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <ListView layoutX="40.0" layoutY="77.0" prefHeight="394.0" prefWidth="344.0" />
+                           </children>
+                        </AnchorPane>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                           <children>
+                              <Label layoutX="120.0" layoutY="14.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Drone Actions">
+                                 <font>
+                                    <Font size="20.0" />
+                                 </font>
+                              </Label>
+                              <RadioButton layoutX="94.0" layoutY="79.0" mnemonicParsing="false" text="Visit Item or Item Container">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                                 <toggleGroup>
+                                    <ToggleGroup fx:id="droneActions" />
+                                 </toggleGroup>
+                              </RadioButton>
+                              <RadioButton layoutX="94.0" layoutY="124.0" mnemonicParsing="false" text="Scan Farm" toggleGroup="$droneActions">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </RadioButton>
+                           </children>
+                        </AnchorPane>
+                    </items>
+                  </SplitPane>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="682.0" prefWidth="568.0">
+               <children>
+                  <Label layoutX="175.0" layoutY="14.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Visualization">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f96ff" height="150.0" layoutX="33.0" layoutY="111.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" width="285.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#80ff00" height="305.0" layoutX="341.0" layoutY="365.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" width="175.0" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff0900" height="141.0" layoutX="59.0" layoutY="434.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="202.0" />
+                  <Label layoutX="33.0" layoutY="66.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Command Center">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="8.0" layoutY="473.0" prefHeight="32.0" prefWidth="51.0" style="-fx-alignment: center;" text="Barn">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="341.0" layoutY="320.0" prefHeight="45.0" prefWidth="62.0" style="-fx-alignment: center;" text="Crop">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Circle fill="#c9c9c9" layoutX="176.0" layoutY="186.0" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label layoutX="160.0" layoutY="178.0" text="Drone" />
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8ff00" height="58.0" layoutX="59.0" layoutY="517.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="95.0" />
+                  <Label layoutX="154.0" layoutY="546.0" prefHeight="32.0" prefWidth="85.0" style="-fx-alignment: center;" text="Milk-storage">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff00e9" height="58.0" layoutX="109.0" layoutY="434.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="102.0" />
+                  <Label layoutX="210.0" layoutY="434.0" prefHeight="32.0" prefWidth="102.0" style="-fx-alignment: center;" text="Live-stock area">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6100ff" height="32.0" layoutX="116.0" layoutY="457.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="51.0" />
+                  <Label layoutX="167.0" layoutY="463.0" prefHeight="32.0" prefWidth="40.0" style="-fx-alignment: center;" text="Cow">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</Pane>
