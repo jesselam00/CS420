@@ -29,9 +29,9 @@ public class DashboardController implements Initializable {
         TreeItem<String> leaf3 = new TreeItem<>("Crop");
         //Combining the branch with the leaf
         branch2.getChildren().addAll(leaf1);
-        branch4.getChildren().addAll(leaf2,leaf3);
+        branch4.getChildren().addAll(leaf2);
         //Combining the root with the branches
-        rootItem.getChildren().addAll(branch1,branch2,branch3,branch4);
+        rootItem.getChildren().addAll(branch1,branch2,branch3,branch4,leaf3);
         //Allows the Tree to be expanded (not needed)
         rootItem.setExpanded(true);
         //Setting the Javafx id to the Tree root
