@@ -5,7 +5,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cs420.cs420.DashboardController">
    <children>
       <Label layoutX="420.0" layoutY="14.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Farm Dashboard">
          <font>
@@ -26,7 +26,7 @@
                               </Label>
                               <StackPane layoutX="46.0" layoutY="59.0">
                                  <children>
-                                    <TreeView fx:id="FarmObjects" prefHeight="400.0" prefWidth="331.0" />
+                                    <TreeView fx:id="Farm" prefHeight="400.0" prefWidth="331.0" />
                                  </children>
                               </StackPane>
                            </children>
