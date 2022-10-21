@@ -24,11 +24,6 @@ public class DashboardController implements Initializable {
         TreeItem branch3= new TreeItem(new ItemContainer("Milk-Storage",100,125, 50,25,20));
         TreeItem branch4 = new TreeItem(new ItemContainer("Command-Center", 100, 300, 100, 100, 20));
         TreeItem branch5 = new TreeItem(new ItemContainer("Crop",500,300,200, 400, 0));
-        branch1.toString();
-        branch2.toString();
-        branch3.toString();
-        branch4.toString();
-        branch5.toString();
         //Leafs of the branches
         TreeItem leaf1 = new TreeItem(new Item("Cow", 125, 105, 25, 10, 5));
         TreeItem leaf2 = new TreeItem(new Item("Drone",400,300,25,10,5));

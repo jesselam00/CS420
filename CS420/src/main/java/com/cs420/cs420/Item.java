@@ -1,6 +1,11 @@
 package com.cs420.cs420;
 
 public class Item {
+    //Helps to input name on Tree leaf instead of scripture :https://softwareengineering.stackexchange.com/questions/309199/treeitem-containing-non-string-object-displaying-strange-text
+    @Override
+    public String toString(){
+        return this.name;
+    }
     protected String name = "";
     protected float price = 0;
     //Location X is the

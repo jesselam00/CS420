@@ -7,6 +7,12 @@ public class ItemContainer extends Item{
 
     public ItemContainer(String name, int location_x, int location_y, float length, float width, float height){
         super(name, location_x, location_y, length, width, height);
+        super.name=name;
+    }
+    //Helps to input name on Tree Branch instead of scripture :https://softwareengineering.stackexchange.com/questions/309199/treeitem-containing-non-string-object-displaying-strange-text
+    @Override
+    public String toString(){
+        return super.name;
     }
 
     public ArrayList<Item> getItems(){
