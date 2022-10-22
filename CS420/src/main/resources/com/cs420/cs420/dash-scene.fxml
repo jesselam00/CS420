@@ -13,98 +13,105 @@
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1024.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cs420.cs420.DashboardController">
-   <children>
-      <Label layoutX="420.0" layoutY="14.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Farm Dashboard">
-         <font>
-            <Font size="20.0" />
-         </font></Label>
-      <SplitPane dividerPositions="0.4429460580912863" layoutX="29.0" layoutY="59.0" prefHeight="684.0" prefWidth="966.0">
-        <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="682.0" prefWidth="372.0">
-               <children>
-                  <SplitPane dividerPositions="0.7720588235294118" orientation="VERTICAL" prefHeight="682.0" prefWidth="424.0">
-                    <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <StackPane layoutX="46.0" layoutY="59.0">
-                                 <children>
-                                    <TreeView fx:id="Farm" prefHeight="200.0" prefWidth="331.0" />
-                                 </children>
-                              </StackPane>
-                              <Label layoutX="120.0" layoutY="259.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Item Commands">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </AnchorPane>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
-                           <children>
-                              <Label layoutX="120.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Drone Actions">
-                                 <font>
-                                    <Font size="20.0" />
-                                 </font>
-                              </Label>
-                              <Button layoutX="97.0" layoutY="45.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="228.0" text="Visit Item or Item Container">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font></Button>
-                              <Button layoutX="97.0" layoutY="100.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="228.0" text="Scan Farm">
-                                 <font>
-                                    <Font size="15.0" />
-                                 </font>
-                              </Button>
-                           </children>
-                        </AnchorPane>
-                    </items>
-                  </SplitPane>
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="682.0" prefWidth="568.0">
-               <children>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f96ff" height="150.0" layoutX="119.0" layoutY="14.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" width="285.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#80ff00" height="305.0" layoutX="341.0" layoutY="365.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" width="175.0" />
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff0900" height="141.0" layoutX="59.0" layoutY="434.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="202.0" />
-                  <Label layoutX="175.0" layoutY="14.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Command Center">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="8.0" layoutY="473.0" prefHeight="32.0" prefWidth="51.0" style="-fx-alignment: center;" text="Barn">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="341.0" layoutY="320.0" prefHeight="45.0" prefWidth="62.0" style="-fx-alignment: center;" text="Crop">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8ff00" height="58.0" layoutX="59.0" layoutY="517.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="95.0" />
-                  <Label layoutX="154.0" layoutY="546.0" prefHeight="32.0" prefWidth="85.0" style="-fx-alignment: center;" text="Milk-storage">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff00e9" height="58.0" layoutX="109.0" layoutY="434.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="102.0" />
-                  <Label layoutX="210.0" layoutY="434.0" prefHeight="32.0" prefWidth="102.0" style="-fx-alignment: center;" text="Live-stock area">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6100ff" height="32.0" layoutX="116.0" layoutY="457.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="51.0" />
-                  <Label layoutX="167.0" layoutY="463.0" prefHeight="32.0" prefWidth="40.0" style="-fx-alignment: center;" text="Cow">
-                     <font>
-                        <Font size="14.0" />
-                     </font>
-                  </Label>
-                  <ImageView fx:id="Drone" fitHeight="80.0" fitWidth="80.0" layoutX="222.0" layoutY="60.0" pickOnBounds="true" smooth="false">
-                     <image>
-                        <Image url="@drone.png" />
-                     </image></ImageView>
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
-   </children>
+    <children>
+        <Label layoutX="420.0" layoutY="14.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Farm Dashboard">
+            <font>
+                <Font size="20.0" />
+            </font></Label>
+        <SplitPane dividerPositions="0.4429460580912863" layoutX="29.0" layoutY="59.0" prefHeight="684.0" prefWidth="966.0">
+            <items>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="682.0" prefWidth="372.0">
+                    <children>
+                        <SplitPane dividerPositions="0.7720588235294118" orientation="VERTICAL" prefHeight="682.0" prefWidth="424.0">
+                            <items>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                    <children>
+                                        <StackPane layoutX="46.0" layoutY="59.0">
+                                            <children>
+                                                <TreeView fx:id="Farm" onContextMenuRequested="#onRightClick" onMouseClicked="#onLeftClick" prefHeight="200.0" prefWidth="331.0" />
+                                            </children>
+                                        </StackPane>
+                                        <Label fx:id="commandLabel" layoutX="46.0" layoutY="259.0" prefHeight="32.0" prefWidth="331.0" style="-fx-alignment: center;" text="Item Commands">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Button fx:id="renameButton" layoutX="46.0" layoutY="291.0" mnemonicParsing="false" onAction="#onRename" prefHeight="32.0" prefWidth="331.0" text="Rename" />
+                                        <Button fx:id="locationButton" layoutX="46.0" layoutY="323.0" mnemonicParsing="false" onAction="#onChangeLocation" prefHeight="32.0" prefWidth="331.0" text="Change Location" />
+                                        <Button fx:id="priceButton" layoutX="46.0" layoutY="355.0" mnemonicParsing="false" onAction="#onChangePrice" prefHeight="32.0" prefWidth="331.0" text="Change Price" />
+                                        <Button fx:id="dimensionsButton" layoutX="46.0" layoutY="387.0" mnemonicParsing="false" onAction="#onChangeDimensions" prefHeight="32.0" prefWidth="331.0" text="Change Dimensions" />
+                                        <Button fx:id="deleteButton" layoutX="46.0" layoutY="419.0" mnemonicParsing="false" onAction="#onDelete" prefHeight="32.0" prefWidth="331.0" text="Delete" />
+                                        <Button fx:id="addItemButton" layoutX="46.0" layoutY="451.0" mnemonicParsing="false" onAction="#onAddItem" prefHeight="32.0" prefWidth="331.0" text="Add Item" />
+                                        <Button fx:id="addItemContainerButton" layoutX="47.0" layoutY="483.0" mnemonicParsing="false" onAction="#onAddItemContainer" prefHeight="32.0" prefWidth="331.0" text="Add Item Container" />
+                                    </children>
+                                </AnchorPane>
+                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                                    <children>
+                                        <Label layoutX="120.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Drone Actions">
+                                            <font>
+                                                <Font size="20.0" />
+                                            </font>
+                                        </Label>
+                                        <Button layoutX="97.0" layoutY="45.0" mnemonicParsing="false" onAction="#visitItem" prefHeight="45.0" prefWidth="228.0" text="Visit Item or Item Container">
+                                            <font>
+                                                <Font size="15.0" />
+                                            </font></Button>
+                                        <Button layoutX="97.0" layoutY="100.0" mnemonicParsing="false" onAction="#scanFarm" prefHeight="45.0" prefWidth="228.0" text="Scan Farm">
+                                            <font>
+                                                <Font size="15.0" />
+                                            </font>
+                                        </Button>
+                                    </children>
+                                </AnchorPane>
+                            </items>
+                        </SplitPane>
+                    </children>
+                </AnchorPane>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="682.0" prefWidth="568.0">
+                    <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#1f96ff" height="150.0" layoutX="119.0" layoutY="14.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" width="285.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#80ff00" height="305.0" layoutX="341.0" layoutY="365.0" opacity="0.4" stroke="BLACK" strokeType="INSIDE" width="175.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff0900" height="141.0" layoutX="59.0" layoutY="434.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="202.0" />
+                        <Label layoutX="175.0" layoutY="14.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Command Center">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="8.0" layoutY="473.0" prefHeight="32.0" prefWidth="51.0" style="-fx-alignment: center;" text="Barn">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Label layoutX="341.0" layoutY="320.0" prefHeight="45.0" prefWidth="62.0" style="-fx-alignment: center;" text="Crop">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f8ff00" height="58.0" layoutX="59.0" layoutY="517.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="95.0" />
+                        <Label layoutX="154.0" layoutY="546.0" prefHeight="32.0" prefWidth="85.0" style="-fx-alignment: center;" text="Milk-storage">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ff00e9" height="58.0" layoutX="109.0" layoutY="434.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="102.0" />
+                        <Label layoutX="210.0" layoutY="434.0" prefHeight="32.0" prefWidth="102.0" style="-fx-alignment: center;" text="Live-stock area">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#6100ff" height="32.0" layoutX="116.0" layoutY="457.0" opacity="0.2" stroke="BLACK" strokeType="INSIDE" width="51.0" />
+                        <Label layoutX="167.0" layoutY="463.0" prefHeight="32.0" prefWidth="40.0" style="-fx-alignment: center;" text="Cow">
+                            <font>
+                                <Font size="14.0" />
+                            </font>
+                        </Label>
+                        <ImageView fx:id="Drone" fitHeight="80.0" fitWidth="80.0" layoutX="222.0" layoutY="60.0" pickOnBounds="true" smooth="false">
+                            <image>
+                                <Image url="@drone.png" />
+                            </image></ImageView>
+                    </children>
+                </AnchorPane>
+            </items>
+        </SplitPane>
+    </children>
 </Pane>
