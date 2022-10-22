@@ -108,7 +108,7 @@ public class DashboardController implements Initializable {
         //Combining the root with the branches
         rootItem.getChildren().addAll(branch1,branch4,branch5);
         //Allows the Tree to be expanded (not needed)
-        rootItem.setExpanded(true);
+        //rootItem.setExpanded(true);
         //Setting the Javafx id to the Tree root
         Farm.setRoot(rootItem);
 
@@ -295,6 +295,16 @@ public class DashboardController implements Initializable {
     public void visitItem() {
         System.out.println("visitItem");
     }
+    public void ReturnHome(){
+        int transition_time = 1;
+        TranslateTransition tend = new TranslateTransition(Duration.seconds(transition_time));
+        tend.setToX(0);
+        tend.setToY(0);
+        tend.setAutoReverse(false);
+        SequentialTransition st = new SequentialTransition(Drone, tend);
+        st.play();
+
+    }
 
     public void transition(int x_cord,int  y_cord,Node Node){
 
@@ -356,7 +366,8 @@ public class DashboardController implements Initializable {
         tend.setToX(0);
         tend.setToY(0);
         tend.setAutoReverse(false);
-        SequentialTransition st = new SequentialTransition(Drone, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, tend);
+
+        SequentialTransition st = new SequentialTransition(Drone, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11,t12, tend);
         st.play();
 
     }
