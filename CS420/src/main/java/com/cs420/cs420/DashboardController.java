@@ -1,5 +1,6 @@
 package com.cs420.cs420;
 
+import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
 import javafx.css.Size;
@@ -296,20 +297,67 @@ public class DashboardController implements Initializable {
     }
 
     public void transition(int x_cord,int  y_cord,Node Node){
-        int transition_time = 1000;
-        TranslateTransition transition = new TranslateTransition();
-        transition.setDuration(Duration.millis(transition_time));
-        transition.setNode(Node);
-        transition.setToX(x_cord);
-        transition.setToY(y_cord);
-        transition.setAutoReverse(false);
-        System.out.println(transition.getFromX());
-        System.out.println(transition.getFromY());
-        transition.play();
+
     }
     public void scanFarm() {
         System.out.println("scanFarm");
-        transition(-222,-60,Drone);
+        int transition_time = 1;
+        TranslateTransition t1 = new TranslateTransition(Duration.seconds(transition_time));
+        t1.setToX(-220);
+        t1.setToY(-60);
+        t1.setAutoReverse(false);
+        // Drone should now be at (0,0)
+        // Window is 568x682
+        TranslateTransition t2 = new TranslateTransition(Duration.seconds(transition_time));
+        t2.setToX(-220);
+        t2.setToY(540);
+        t2.setAutoReverse(false);
+        TranslateTransition t3 = new TranslateTransition(Duration.seconds(transition_time));
+        t3.setToX(-140);
+        t3.setToY(540);
+        t3.setAutoReverse(false);
+        TranslateTransition t4 = new TranslateTransition(Duration.seconds(transition_time));
+        t4.setToX(-140);
+        t4.setToY(-60);
+        t4.setAutoReverse(false);
+        TranslateTransition t5 = new TranslateTransition(Duration.seconds(transition_time));
+        t5.setToX(-60);
+        t5.setToY(-60);
+        t5.setAutoReverse(false);
+        TranslateTransition t6 = new TranslateTransition(Duration.seconds(transition_time));
+        t6.setToX(-60);
+        t6.setToY(540);
+        t6.setAutoReverse(false);
+        TranslateTransition t7 = new TranslateTransition(Duration.seconds(transition_time));
+        t7.setToX(20);
+        t7.setToY(540);
+        t7.setAutoReverse(false);
+        TranslateTransition t8 = new TranslateTransition(Duration.seconds(transition_time));
+        t8.setToX(20);
+        t8.setToY(-60);
+        t8.setAutoReverse(false);
+        TranslateTransition t9 = new TranslateTransition(Duration.seconds(transition_time));
+        t9.setToX(100);
+        t9.setToY(-60);
+        t9.setAutoReverse(false);
+        TranslateTransition t10 = new TranslateTransition(Duration.seconds(transition_time));
+        t10.setToX(100);
+        t10.setToY(540);
+        t10.setAutoReverse(false);
+        TranslateTransition t11 = new TranslateTransition(Duration.seconds(transition_time));
+        t11.setToX(180);
+        t11.setToY(540);
+        t11.setAutoReverse(false);
+        TranslateTransition t12 = new TranslateTransition(Duration.seconds(transition_time));
+        t12.setToX(180);
+        t12.setToY(-60);
+        t12.setAutoReverse(false);
+        TranslateTransition tend = new TranslateTransition(Duration.seconds(transition_time));
+        tend.setToX(0);
+        tend.setToY(0);
+        tend.setAutoReverse(false);
+        SequentialTransition st = new SequentialTransition(Drone, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, tend);
+        st.play();
 
     }
 }
