@@ -1,14 +1,23 @@
 package com.cs420.cs420;
 
+import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
+import javafx.css.Size;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.TilePane;
+import javafx.util.Duration;
+import javafx.util.Pair;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
@@ -150,8 +159,27 @@ public class DashboardController implements Initializable {
         TreeItem<Item> item = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
         Dialog<String> dialog = new Dialog<>();
         dialog.setTitle("Change Location");
-        ButtonType change = new ButtonType("Change", ButtonBar.ButtonData.OK_DONE);
-        dialog.getDialogPane().getButtonTypes().addAll(change, ButtonType.CANCEL);
+        dialog.setHeaderText("Change Location:");
+        dialog.setResizable(true);
+
+        Label label1 = new Label("X: ");
+        Label label2 = new Label("Y: ");
+        TextField text1 = new TextField();
+        TextField text2 = new TextField();
+
+        GridPane grid = new GridPane();
+        grid.add(label1, 1, 1);
+        grid.add(text1, 2, 1);
+        grid.add(label2, 1, 2);
+        grid.add(text2, 2, 2);
+        dialog.getDialogPane().setContent(grid);
+
+        ButtonType buttonTypeCancel = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType buttonTypeOk = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().add(buttonTypeOk);
+        
+        Optional<String> result = dialog.showAndWait();
+
 
         if (item != null) {
             item.getValue().setLocationX(0);
@@ -175,7 +203,50 @@ public class DashboardController implements Initializable {
     }
     public void onChangeDimensions() {
         TreeItem<Item> item = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
-        
+        Dialog<Pair<String, String>> dialog = new Dialog<>();
+        dialog.setTitle("TestName");
+
+        // Set the button types.
+        ButtonType loginButtonType = new ButtonType("OK", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(loginButtonType, ButtonType.CANCEL);
+
+        GridPane gridPane = new GridPane();
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+        gridPane.setPadding(new Insets(20, 150, 10, 10));
+
+        TextField from = new TextField();
+        from.setPromptText("length");
+        TextField to = new TextField();
+        to.setPromptText("width");
+       // TextField to = new TextField();
+        //to.setPromptText("height");
+
+        gridPane.add(new Label("length:"), 0, 0);
+        gridPane.add(from, 1, 0);
+        gridPane.add(new Label("width:"), 0, 1);
+        gridPane.add(to, 1, 1);
+        gridPane.add(new Label("height:"), 0, 2);
+        gridPane.add(to, 1, 2);
+
+        dialog.getDialogPane().setContent(gridPane);
+
+        // Request focus on the username field by default.
+        Platform.runLater(() -> from.requestFocus());
+
+        // Convert the result to a username-password-pair when the login button is clicked.
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == loginButtonType) {
+                return new Pair<>(from.getText(), to.getText());
+            }
+            return null;
+        });
+
+        Optional<Pair<String, String>> result = dialog.showAndWait();
+
+        result.ifPresent(pair -> {
+            System.out.println("From=" + pair.getKey() + ", To=" + pair.getValue());
+        }); 
         if (item != null) {
             item.getValue().setLength(10);
             item.getValue().setHeight(10);
@@ -183,7 +254,7 @@ public class DashboardController implements Initializable {
             // add area to type length/height?
         }
 
-        System.out.println("onChangeDimensions");
+//        System.out.println("onChangeDimensions");
     }
     public void onDelete() {
         TreeItem item = (TreeItem) Farm.getSelectionModel().getSelectedItem();
@@ -224,7 +295,21 @@ public class DashboardController implements Initializable {
         System.out.println("visitItem");
     }
 
+    public void transition(int x_cord,int  y_cord,Node Node){
+        int transition_time = 1000;
+        TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.millis(transition_time));
+        transition.setNode(Node);
+        transition.setToX(x_cord);
+        transition.setToY(y_cord);
+        transition.setAutoReverse(false);
+        System.out.println(transition.getFromX());
+        System.out.println(transition.getFromY());
+        transition.play();
+    }
     public void scanFarm() {
         System.out.println("scanFarm");
+        transition(-222,-60,Drone);
+
     }
 }
