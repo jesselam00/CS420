@@ -4,7 +4,6 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.IOException;
 
 
 public class Dashboard {
@@ -27,4 +26,19 @@ public class Dashboard {
         return dashboard;
     }
 
+}
+ class Main {
+    public static void main(String[] args) {
+        Application.launch(DashboardVis.class, args);
+    }
+    public static class DashboardVis extends Application {
+        @Override
+        public void start(Stage stage) {
+            Dashboard dashboard = Dashboard.getInstance();
+            Scene scene = dashboard.scene;
+            stage.setTitle("Farm Dashboard");
+            stage.setScene(scene);
+            stage.show();
+        }
+    }
 }
