@@ -362,12 +362,20 @@ public class DashboardController implements Initializable {
         t12.setToX(180);
         t12.setToY(-60);
         t12.setAutoReverse(false);
+        TranslateTransition t13 = new TranslateTransition(Duration.seconds(transition_time));
+        t13.setToX(220);
+        t13.setToY(-60);
+        t13.setAutoReverse(false);
+        TranslateTransition t14 = new TranslateTransition(Duration.seconds(transition_time));
+        t14.setToX(220);
+        t14.setToY(540);
+        t14.setAutoReverse(false);
         TranslateTransition tend = new TranslateTransition(Duration.seconds(transition_time));
         tend.setToX(0);
         tend.setToY(0);
         tend.setAutoReverse(false);
 
-        SequentialTransition st = new SequentialTransition(Drone, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11,t12, tend);
+        SequentialTransition st = new SequentialTransition(Drone, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, tend);
         st.play();
 
     }
