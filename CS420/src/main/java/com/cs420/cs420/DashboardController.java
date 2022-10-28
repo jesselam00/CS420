@@ -15,6 +15,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.TilePane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import javafx.util.Pair;
@@ -22,12 +23,13 @@ import javafx.util.Pair;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
 
-        //ArrayList<ItemContainer> containerArr = new ArrayList<>();
-        //ArrayList<Item> itemArr = new ArrayList<>();
+    //ArrayList<ItemContainer> containerArr = new ArrayList<>();
+    //ArrayList<Item> itemArr = new ArrayList<>();
     @FXML
     private TreeView Farm;
 
@@ -81,7 +83,7 @@ public class DashboardController implements Initializable {
         barn.addItem(livestock);
         ItemContainer milkstorage = new ItemContainer("Milk-Storage",100,125, 50,25,20);
         barn.addItem(milkstorage);
-        ItemContainer commandcenter = new ItemContainer("Command-Center", 100, 300, 100, 100, 20);
+        ItemContainer commandcenter = new ItemContainer("Command-Center", 150, 50, 100, 200, 20);
         ItemContainer crop = new ItemContainer("Crop",500,300,200, 400, 0);
         root.addItem(barn);
         root.addItem(commandcenter);
@@ -102,7 +104,7 @@ public class DashboardController implements Initializable {
         //containerArr.addAll(root,barn,livestock,milkstorage,commandcenter,crop);
 
         Item cow = new Item("Cow", 125, 105, 25, 10, 5);
-        Item drone = new Item("Drone",400,300,25,10,5);
+        Item drone = new Item("Drone",200,60,25,10,5);
         livestock.addItem(cow);
         commandcenter.addItem(drone);
         TreeItem leaf1 = new TreeItem(cow);
@@ -119,22 +121,34 @@ public class DashboardController implements Initializable {
         Farm.setRoot(rootItem);
 
 //        FarmVis.getChildren().addAll(barn.getRectangle());
-        addItemToVis(barn);
+        addItemToVis(commandcenter);
+//        addItemToVis(barn);
 //        FarmVis.getChildren().addAll(barn.getRectangle(), livestock.getRectangle(), milkstorage.getRectangle(), commandcenter.getRectangle(), crop.getRectangle(), cow.getRectangle(), drone.getRectangle());
 
-
+        Drone.setX(drone.getLocationX());
+        Drone.setY(drone.getLocationY());
     }
 
-    public void addItemToVis(ItemContainer item){
+    public void addItemToVis(Item item){
         Rectangle rect = item.getRectangle();
+        Label name = item.getLabel();
+        name.relocate(item.getLocationX(),item.getLocationY());
         rect.relocate(item.getLocationX(), item.getLocationY());
         rect.setHeight(item.getLength());
         rect.setWidth(item.getWidth());
-        FarmVis.getChildren().addAll(rect);
-        FarmVis.getScene();
+        FarmVis.getChildren().addAll(rect, name);
 
     }
-    
+    public void addItemToVis(ItemContainer item){
+        Rectangle rect = item.getRectangle();
+        Label name = item.getLabel();
+        name.relocate(item.getLocationX(),item.getLocationY());
+        rect.relocate(item.getLocationX(), item.getLocationY());
+        rect.setHeight(item.getLength());
+        rect.setWidth(item.getWidth());
+        FarmVis.getChildren().addAll(rect, name);
+    }
+
     public void onLeftClick() {
         TreeItem<Item> treeItem = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
         if(treeItem == null) {
@@ -170,8 +184,11 @@ public class DashboardController implements Initializable {
         name.showAndWait();
         if (item != null) {
             String oldname = item.getValue().getName();
-            if(name.getResult()!=null){
+            if(name.getResult()!=null) {
+                FarmVis.getChildren().remove(item.getValue().getLabel());
                 item.getValue().setName(name.getResult());
+                item.getValue().setLabel(name.getResult());
+                FarmVis.getChildren().add(item.getValue().getLabel());
             }
 
             Farm.refresh();
@@ -213,14 +230,15 @@ public class DashboardController implements Initializable {
 
         result.ifPresent(pair -> {
             FarmVis.getChildren().remove(item.getValue().getRectangle());
+            FarmVis.getChildren().remove(item.getValue().getLabel());
             item.getValue().setLocationX(Integer.parseInt(pair.getKey()));
             item.getValue().setLocationY(Integer.parseInt(pair.getValue()));
-            addItemToVis((ItemContainer) item.getValue());
+            addItemToVis(item.getValue());
             Farm.refresh();
         });
 
-       // System.out.println("X: " + item.getValue().getLocationX());
-       // System.out.println("Y: " + item.getValue().getLocationY());
+        // System.out.println("X: " + item.getValue().getLocationX());
+        // System.out.println("Y: " + item.getValue().getLocationY());
     }
     public void onChangePrice() {
         TreeItem<Item> item = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
@@ -277,10 +295,11 @@ public class DashboardController implements Initializable {
 
         result.ifPresent(pair -> {
             FarmVis.getChildren().remove(item.getValue().getRectangle());
+            FarmVis.getChildren().remove(item.getValue().getLabel());
             item.getValue().setLength(Float.valueOf(pair.get(0)));
             item.getValue().setWidth(Float.valueOf(pair.get(1)));
             item.getValue().setHeight(Float.valueOf(pair.get(2)));
-            addItemToVis((ItemContainer) item.getValue());
+            addItemToVis(item.getValue());
         });
         System.out.println("L: " + item.getValue().getLength());
         System.out.println("W: " + item.getValue().getWidth());
@@ -294,6 +313,8 @@ public class DashboardController implements Initializable {
         if(item != null) {
             TreeItem<ItemContainer> itemContainerTreeItem = (TreeItem<ItemContainer>) item.getParent();
             itemContainerTreeItem.getValue().removeItem((Item) item.getValue());
+            FarmVis.getChildren().remove(((Item) item.getValue()).getRectangle());
+            FarmVis.getChildren().remove(((Item) item.getValue()).getLabel());
             item.getParent().getChildren().remove(item);
             System.out.println(itemContainerTreeItem.getValue().getItems());
         }
@@ -306,25 +327,38 @@ public class DashboardController implements Initializable {
             item.getValue().addItem(newitem);
             TreeItem newTreeItem = new TreeItem(newitem);
             item.getChildren().add(newTreeItem);
+            addItemToVis(newitem);
         }
 //        System.out.println("onAddItem");
     }
     public void onAddItemContainer() {
-        TreeItem<ItemContainer> item = (TreeItem) Farm.getSelectionModel().getSelectedItem();
+        TreeItem<ItemContainer> item = (TreeItem<ItemContainer>) Farm.getSelectionModel().getSelectedItem();
         if(item != null){
             ItemContainer newitem = new ItemContainer("Item",item.getValue().getLocationX()+10,item.getValue().getLocationY()+10,100,50,20);
             item.getValue().addItem(newitem);
             ItemContainer newitemcontainer = new ItemContainer("Item Container",item.getValue().getLocationX()+10,item.getValue().getLocationY()+10,100,50,20);
             TreeItem newTreeItem = new TreeItem(newitemcontainer);
             item.getChildren().add(newTreeItem);
+            addItemToVis(newitem);
         }
         // System.out.println("onAddItemContainer");
     }
 
-
     public void visitItem() {
+        TreeItem<Item> item = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
+        int transition_time = 1;
+
+        TranslateTransition tend = new TranslateTransition(Duration.seconds(transition_time));
+        tend.setToX(item.getValue().getLocationX()-Drone.getX());
+        tend.setToY(item.getValue().getLocationY()-Drone.getY());
+        tend.setAutoReverse(false);
+        SequentialTransition st = new SequentialTransition(Drone, tend);
+        st.play();
+
+
         System.out.println("visitItem");
     }
+
     public void ReturnHome(){
         int transition_time = 1;
         TranslateTransition tend = new TranslateTransition(Duration.seconds(transition_time));

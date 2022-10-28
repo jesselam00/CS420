@@ -1,6 +1,10 @@
 package com.cs420.cs420;
 
+import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+
+import java.util.Random;
 
 public class Item {
     //Helps to input name on Tree leaf instead of scripture :https://softwareengineering.stackexchange.com/questions/309199/treeitem-containing-non-string-object-displaying-strange-text
@@ -8,7 +12,7 @@ public class Item {
     public String toString(){
         return this.name;
     }
-    protected String name = "";
+    protected String name = "New";
     protected float price = 0;
     //Location X is the
     protected int location_x = 0;
@@ -21,6 +25,8 @@ public class Item {
     protected float height = 0;
     protected Rectangle rectangle = new Rectangle(0, 0);
 
+    protected Label label = new Label("");
+
     public Item(String name, int location_x, int location_y, float length, float width, float height){
         this.name = name;
         this.location_x = location_x;
@@ -30,10 +36,21 @@ public class Item {
         this.height = height;
         this.rectangle.setHeight(this.length);
         this.rectangle.setWidth(this.width);
+        this.label.setText(this.name);
+        this.rectangle.setFill(Color.color(new Random().nextDouble(0,1.0),new Random().nextDouble(0,1.0),new Random().nextDouble(0,1.0),0.2));
+        this.rectangle.setStroke(Color.color(0,0,0,1.0));
     }
 
 
     //Name of Item
+
+
+    public Label getLabel() {
+        return this.label;
+    }
+    public void setLabel(String s) {
+        this.label.setText(s);
+    }
     public String getName(){
 
         return this.name;

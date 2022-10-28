@@ -14,7 +14,7 @@ public class Dashboard {
     private Dashboard(){
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Dashboard.class.getResource("dash-scene.fxml"));
-            scene = new Scene(fxmlLoader.load(), 1024, 768);
+            scene = new Scene(fxmlLoader.load(), 1100, 900);
         } catch(Exception e) {
             e.printStackTrace();
         }
