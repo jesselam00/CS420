@@ -1,5 +1,7 @@
 package com.cs420.cs420;
 
+import javafx.scene.shape.Rectangle;
+
 public class Item {
     //Helps to input name on Tree leaf instead of scripture :https://softwareengineering.stackexchange.com/questions/309199/treeitem-containing-non-string-object-displaying-strange-text
     @Override
@@ -17,6 +19,7 @@ public class Item {
     protected float width = 0;
     // Height is the Z axis
     protected float height = 0;
+    protected Rectangle rectangle = new Rectangle(0, 0);
 
     public Item(String name, int location_x, int location_y, float length, float width, float height){
         this.name = name;
@@ -25,60 +28,83 @@ public class Item {
         this.length = length;
         this.width = width;
         this.height = height;
+        this.rectangle.setHeight(this.length);
+        this.rectangle.setWidth(this.width);
     }
 
-    //Cant implement Delete Item (Object can't commit suicide)
 
     //Name of Item
     public String getName(){
+
         return this.name;
     }
     public void setName(String newName){
+
         this.name=newName;
     }
     //Price of Item
     public float getPrice(){
+
         return this.price;
     }
     public void setPrice(float newPrice){
+
         this.price=newPrice;
     }
     //X coordinate position  of Item
 
     public int getLocationX(){
+
         return this.location_x;
     }
     public void setLocationX(int newLocationX){
+
         this.location_x=newLocationX;
     }
     //Y coordinate position  of Item
     public int getLocationY(){
+
         return this.location_y;
     }
     public void setLocationY(int newLocationY){
-        this.location_x=newLocationY;
+
+        this.location_y=newLocationY;
     }
     //Length of Item
     public float getLength(){
+
         return this.length;
     }
     public void setLength(float newLength){
+
         this.length=newLength;
+
     }
     //Width of Item
     public float getWidth(){
+
         return this.width;
     }
     public void setWidth(float newWidth){
+
         this.width=newWidth;
     }
     //Height of Item
     public float getHeight(){
+
         return this.height;
     }
     public void setHeight(float newHeight){
-        this.width=newHeight;
+
+        this.height=newHeight;
     }
 
+    public Rectangle getRectangle(){
 
+        return this.rectangle;
+    }
+    public void setRectangle(float length, float width){
+        this.rectangle.setWidth(width);
+        this.rectangle.setHeight(length);
+    }
 }
