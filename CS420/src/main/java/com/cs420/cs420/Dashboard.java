@@ -1,12 +1,10 @@
 package com.cs420.cs420;
 
-import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
-import java.io.IOException;
 
 
+//Uses Singleton pattern
 public class Dashboard {
     private static Dashboard dashboard;
     public Scene scene;
@@ -26,5 +24,4 @@ public class Dashboard {
         }
         return dashboard;
     }
-
 }

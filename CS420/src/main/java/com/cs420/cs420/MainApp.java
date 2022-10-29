@@ -10,7 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class MainApp extends Application {
-    Dashboard dashboard = Dashboard.getInstance();
+    public Dashboard dashboard = Dashboard.getInstance();
 
 
     @Override

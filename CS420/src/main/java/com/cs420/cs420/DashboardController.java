@@ -1,65 +1,43 @@
 package com.cs420.cs420;
-
-import javafx.animation.SequentialTransition;
-import javafx.animation.TranslateTransition;
-import javafx.application.Platform;
-import javafx.css.Size;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.util.Duration;
 import javafx.util.Pair;
-
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
-import java.util.Random;
 import java.util.ResourceBundle;
 
+//Uses Composite pattern
 public class DashboardController implements Initializable {
 
-    //ArrayList<ItemContainer> containerArr = new ArrayList<>();
-    //ArrayList<Item> itemArr = new ArrayList<>();
+
     @FXML
     private TreeView Farm;
-
     @FXML
     private Label commandLabel;
-
     @FXML
     private Button renameButton;
-
     @FXML
     private Button locationButton;
-
     @FXML
     private Button priceButton;
-
     @FXML
     private Button dimensionsButton;
-
     @FXML
     private Button deleteButton;
-
     @FXML
     private Button addItemButton;
-
     @FXML
     private Button addItemContainerButton;
-
     @FXML
-    private ImageView Drone;
-
+    private ImageView Drone_Image;
+    private Drone drone;
     @FXML
     private AnchorPane FarmVis;
 
@@ -73,21 +51,20 @@ public class DashboardController implements Initializable {
         dimensionsButton.setVisible(false);
         locationButton.setVisible(false);
         priceButton.setVisible(false);
-        int i=0;
-        int j=0;
+
         //Created the Different item like Example
         //Root File
-        ItemContainer root = new ItemContainer("Root",0,0,600, 800, 0);
-        ItemContainer barn = new ItemContainer("Barn",100,100,100,50,20);
-        ItemContainer livestock = new ItemContainer("Live-Stock-Area",120,100,50,50,20);
-        barn.addItem(livestock);
-        ItemContainer milkstorage = new ItemContainer("Milk-Storage",100,125, 50,25,20);
-        barn.addItem(milkstorage);
-        ItemContainer commandcenter = new ItemContainer("Command-Center", 150, 50, 100, 200, 20);
-        ItemContainer crop = new ItemContainer("Crop",500,300,200, 400, 0);
-        root.addItem(barn);
-        root.addItem(commandcenter);
-        root.addItem(crop);
+        ItemContainer root = new ItemContainer("Root", 0, 0, 600, 800, 0);
+        ItemContainer barn = new ItemContainer("Barn", 50, 220, 200, 450, 10000);
+        ItemContainer livestock = new ItemContainer("Live-Stock-Area", 80, 250, 150, 150, 20);
+        barn.addItemContainer(livestock);
+        ItemContainer milkstorage = new ItemContainer("Milk-Storage", 240, 250, 80, 140, 20);
+        barn.addItemContainer(milkstorage);
+        ItemContainer commandcenter = new ItemContainer("Command-Center", 120, 30, 120, 200, 20);
+        ItemContainer crop = new ItemContainer("Crop", 20, 440, 300, 560, 0);
+        root.addItemContainer(barn);
+        root.addItemContainer(commandcenter);
+        root.addItemContainer(crop);
         //Root File
         TreeItem rootItem = new TreeItem(root);
         //Main branches
@@ -97,52 +74,56 @@ public class DashboardController implements Initializable {
         TreeItem branch4 = new TreeItem(commandcenter);
         TreeItem branch5 = new TreeItem(crop);
 
-        ItemContainer barn2 = new ItemContainer("Barn 2",100,100,100,50,20);
-        barn.addItem(barn2);
+        ItemContainer barn2 = new ItemContainer("Barn 2", 400, 250, 100, 50, 20);
+        barn.addItemContainer(barn2);
         TreeItem branch1_2 = new TreeItem(barn2);
-        branch1.getChildren().addAll(branch1_2,branch2,branch3);
-        //containerArr.addAll(root,barn,livestock,milkstorage,commandcenter,crop);
-
-        Item cow = new Item("Cow", 125, 105, 25, 10, 5);
-        Item drone = new Item("Drone",200,60,25,10,5);
+        branch1.getChildren().addAll(branch1_2, branch2, branch3);
+        Item cow = new Item("Cow", 500, 105, 50, 30, 5);
+        Item drone_item = new Item("Drone", 200, 60, 25, 10, 5);
         livestock.addItem(cow);
-        commandcenter.addItem(drone);
+        commandcenter.addItem(drone_item);
         TreeItem leaf1 = new TreeItem(cow);
-        TreeItem leaf2 = new TreeItem(drone);
-        //itemArr.addAll(cow,drone);
+        TreeItem leaf2 = new TreeItem(drone_item);
         //Combining the branch with the leaf
         branch2.getChildren().add(leaf1);
         branch4.getChildren().add(leaf2);
         //Combining the root with the branches
-        rootItem.getChildren().addAll(branch1,branch4,branch5);
+        rootItem.getChildren().addAll(branch1, branch4, branch5);
         //Allows the Tree to be expanded (not needed)
-        //rootItem.setExpanded(true);
-        //Setting the Javafx id to the Tree root
+        rootItem.setExpanded(true);
         Farm.setRoot(rootItem);
 
-//        FarmVis.getChildren().addAll(barn.getRectangle());
+        //Hard codes the necessary item and item containers
         addItemToVis(commandcenter);
-//        addItemToVis(barn);
-//        FarmVis.getChildren().addAll(barn.getRectangle(), livestock.getRectangle(), milkstorage.getRectangle(), commandcenter.getRectangle(), crop.getRectangle(), cow.getRectangle(), drone.getRectangle());
+        addItemToVis(barn);
+        addItemToVis(barn2);
+        addItemToVis(livestock);
+        addItemToVis(milkstorage);
+        addItemToVis(crop);
+        addItemToVis(cow);
 
-        Drone.setX(drone.getLocationX());
-        Drone.setY(drone.getLocationY());
+        Drone_Image.setX(drone_item.getLocationX());
+        Drone_Image.setY(drone_item.getLocationY());
+        drone = new Drone(Drone_Image);
     }
 
-    public void addItemToVis(Item item){
+    // Given an Item, access its rectangle, set its coordinates and dimensions, and add to visualization
+    public void addItemToVis(Item item) {
         Rectangle rect = item.getRectangle();
         Label name = item.getLabel();
-        name.relocate(item.getLocationX(),item.getLocationY());
+        name.relocate(item.getLocationX(), item.getLocationY());
         rect.relocate(item.getLocationX(), item.getLocationY());
         rect.setHeight(item.getLength());
         rect.setWidth(item.getWidth());
         FarmVis.getChildren().addAll(rect, name);
 
     }
-    public void addItemToVis(ItemContainer item){
+
+    // Given an ItemContainer, access its rectangle, set its coordinates and dimensions, and add to visualization
+    public void addItemToVis(ItemContainer item) {
         Rectangle rect = item.getRectangle();
         Label name = item.getLabel();
-        name.relocate(item.getLocationX(),item.getLocationY());
+        name.relocate(item.getLocationX(), item.getLocationY());
         rect.relocate(item.getLocationX(), item.getLocationY());
         rect.setHeight(item.getLength());
         rect.setWidth(item.getWidth());
@@ -150,8 +131,8 @@ public class DashboardController implements Initializable {
     }
 
     public void onLeftClick() {
-        TreeItem<Item> treeItem = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
-        if(treeItem == null) {
+        TreeItem treeItem = (TreeItem) Farm.getSelectionModel().getSelectedItem();
+        if (treeItem == null) {
             return;
         }
         commandLabel.setVisible(true);
@@ -160,42 +141,72 @@ public class DashboardController implements Initializable {
         dimensionsButton.setVisible(true);
         locationButton.setVisible(true);
         priceButton.setVisible(true);
-        if (treeItem.getValue() instanceof ItemContainer) {           // // item
+        if (treeItem.getValue() instanceof ItemContainer) {      // ItemContainer
             commandLabel.setText("Item Container Commands");
             addItemButton.setVisible(true);
             addItemContainerButton.setVisible(true);
-        } else {                                // item container
+        } else {     // Item
             commandLabel.setText("Item Commands");
             addItemButton.setVisible(false);
             addItemContainerButton.setVisible(false);
         }
     }
+
+    //Right now has no functionality just prints "You right-clicked"
     public void onRightClick() {
-        TreeItem<Item> item = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
-        if(item!=null) {
-            System.out.println("You right clicked " + item.getValue());
+        TreeItem item = (TreeItem) Farm.getSelectionModel().getSelectedItem();
+        if (item != null) {
+            if (item.getValue() instanceof ItemContainer) {
+                ItemContainer temp = (ItemContainer) item.getValue();
+                System.out.println(" Name of Item Container: " + temp.getName());
+                System.out.println(" Price of Item Container: " + temp.getPrice());
+                System.out.println(" Items in Container: " + temp.getItems());
+                System.out.println(" Item Containers in Container: " + temp.getItemContainers());
+            } else {
+                Item temp = (Item) item.getValue();
+                System.out.println(" Name of Item: " + temp.getName());
+                System.out.println(" Price of Item: " + temp.getPrice());
+            }
+
         }
     }
 
+    //Allows the user to rename the item or item container
     public void onRename() {
-        TreeItem<Item> item = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
+        TreeItem item = (TreeItem) Farm.getSelectionModel().getSelectedItem();
         TextInputDialog name = new TextInputDialog("");
         name.setHeaderText("Enter new Name:");
         name.showAndWait();
+
+
         if (item != null) {
-            String oldname = item.getValue().getName();
-            if(name.getResult()!=null) {
-                FarmVis.getChildren().remove(item.getValue().getLabel());
-                item.getValue().setName(name.getResult());
-                item.getValue().setLabel(name.getResult());
-                FarmVis.getChildren().add(item.getValue().getLabel());
+            if (item.getValue() instanceof ItemContainer) {
+                // Type Cast to Container
+                ;
+                String oldname = ((ItemContainer) item.getValue()).getName();
+                FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getLabel());
+                ((ItemContainer) item.getValue()).setName(name.getResult());
+                ((ItemContainer) item.getValue()).setLabel(name.getResult());
+                FarmVis.getChildren().add(((ItemContainer) item.getValue()).getLabel());
+                Farm.refresh();
+            } else {
+                // Type Cast to Item
+                Item temp = (Item) item.getValue();
+                String oldname = temp.getName();
+                FarmVis.getChildren().remove(temp.getLabel());
+                temp.setName(name.getResult());
+                temp.setLabel(name.getResult());
+                FarmVis.getChildren().add(temp.getLabel());
+                Farm.refresh();
             }
 
-            Farm.refresh();
         }
     }
+
+    //Source code for onChangeDimension:https://code.makery.ch/blog/javafx-dialogs-official/
+    //Allows user to change the position of the item or item container using x and y location
     public void onChangeLocation() {
-        TreeItem<Item> item = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
+        TreeItem item = (TreeItem) Farm.getSelectionModel().getSelectedItem();
         Dialog<Pair<String, String>> dialog = new Dialog<>();
         dialog.setTitle("Change Location");
 
@@ -229,31 +240,50 @@ public class DashboardController implements Initializable {
         Optional<Pair<String, String>> result = dialog.showAndWait();
 
         result.ifPresent(pair -> {
-            FarmVis.getChildren().remove(item.getValue().getRectangle());
-            FarmVis.getChildren().remove(item.getValue().getLabel());
-            item.getValue().setLocationX(Integer.parseInt(pair.getKey()));
-            item.getValue().setLocationY(Integer.parseInt(pair.getValue()));
-            addItemToVis(item.getValue());
+            if (item.getValue() instanceof ItemContainer) {
+                ItemContainer temp = (ItemContainer) item.getValue();
+                FarmVis.getChildren().remove(temp.getRectangle());
+                FarmVis.getChildren().remove(temp.getLabel());
+                temp.setLocationX(Integer.parseInt(pair.getKey()));
+                temp.setLocationY(Integer.parseInt(pair.getValue()));
+                addItemToVis(temp);
+            } else {
+                Item temp = (Item) item.getValue();
+                FarmVis.getChildren().remove(temp.getRectangle());
+                FarmVis.getChildren().remove(temp.getLabel());
+                temp.setLocationX(Integer.parseInt(pair.getKey()));
+                temp.setLocationY(Integer.parseInt(pair.getValue()));
+                addItemToVis(temp);
+            }
+
             Farm.refresh();
         });
-
-        // System.out.println("X: " + item.getValue().getLocationX());
-        // System.out.println("Y: " + item.getValue().getLocationY());
     }
+
     public void onChangePrice() {
-        TreeItem<Item> item = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
-        TextInputDialog price = new TextInputDialog(("$")+"Enter new Price");
+        TreeItem item = (TreeItem) Farm.getSelectionModel().getSelectedItem();
+        TextInputDialog price = new TextInputDialog(("$") + "Enter new Price");
         price.setHeaderText("Enter new Price ($):");
         price.showAndWait();
-        if(item !=null){
-            if(price.getResult()!=null){
-                item.getValue().setPrice(Float.valueOf(price.getResult()));
+        if (item != null) {
+            if (price.getResult() != null) {
+                if (item.getValue() instanceof ItemContainer) {
+                    ItemContainer temp = (ItemContainer) item.getValue();
+                    temp.setPrice(Float.valueOf(price.getResult()));
+                } else {
+                    Item temp = (Item) item.getValue();
+                    temp.setPrice(Float.valueOf(price.getResult()));
+                }
+                Farm.refresh();
             }
-            Farm.refresh();
+
         }
     }
+
+    //Source code for onChangeDimension:https://code.makery.ch/blog/javafx-dialogs-official/
+    //Allows user to change the size of the item or item container using length and width
     public void onChangeDimensions() {
-        TreeItem<Item> item = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
+        TreeItem item = (TreeItem) Farm.getSelectionModel().getSelectedItem();
         Dialog<ArrayList<String>> dialog = new Dialog<>();
         dialog.setTitle("Change Dimensions");
 
@@ -290,157 +320,105 @@ public class DashboardController implements Initializable {
             }
             return null;
         });
-
         Optional<ArrayList<String>> result = dialog.showAndWait();
-
         result.ifPresent(pair -> {
-            FarmVis.getChildren().remove(item.getValue().getRectangle());
-            FarmVis.getChildren().remove(item.getValue().getLabel());
-            item.getValue().setLength(Float.valueOf(pair.get(0)));
-            item.getValue().setWidth(Float.valueOf(pair.get(1)));
-            item.getValue().setHeight(Float.valueOf(pair.get(2)));
-            addItemToVis(item.getValue());
+            if(item.getValue() instanceof ItemContainer){
+                FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getRectangle());
+                FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getLabel());
+                ((ItemContainer) item.getValue()).setLength(Float.valueOf(pair.get(0)));
+                ((ItemContainer) item.getValue()).setWidth(Float.valueOf(pair.get(1)));
+                ((ItemContainer) item.getValue()).setHeight(Float.valueOf(pair.get(2)));
+                addItemToVis(((ItemContainer) item.getValue()));
+            }
+            else{
+                FarmVis.getChildren().remove(((Item) item.getValue()).getRectangle());
+                FarmVis.getChildren().remove(((Item) item.getValue()).getLabel());
+                ((Item) item.getValue()).setLength(Float.valueOf(pair.get(0)));
+                ((Item) item.getValue()).setWidth(Float.valueOf(pair.get(1)));
+                ((Item) item.getValue()).setHeight(Float.valueOf(pair.get(2)));
+                addItemToVis(((Item) item.getValue()));
+            }
         });
-        System.out.println("L: " + item.getValue().getLength());
-        System.out.println("W: " + item.getValue().getWidth());
-        System.out.println("H: " + item.getValue().getHeight());
     }
+
+    //When user click delete will allow user to remove the item or item container to the tree
     public void onDelete() {
         TreeItem item = (TreeItem) Farm.getSelectionModel().getSelectedItem();
         if (item.getValue().toString() == "Root") {
             return;
         }
-        if(item != null) {
-            TreeItem<ItemContainer> itemContainerTreeItem = (TreeItem<ItemContainer>) item.getParent();
-            itemContainerTreeItem.getValue().removeItem((Item) item.getValue());
-            FarmVis.getChildren().remove(((Item) item.getValue()).getRectangle());
-            FarmVis.getChildren().remove(((Item) item.getValue()).getLabel());
-            item.getParent().getChildren().remove(item);
-            System.out.println(itemContainerTreeItem.getValue().getItems());
+        if (item != null) {
+            if (item.getValue() instanceof ItemContainer) {
+                if (((ItemContainer) item.getValue()).getItemContainers().size() > 0) {
+                    for (int i = ((ItemContainer) item.getValue()).getItemContainers().size()-1; i >= 0; i--) {
+                        FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getItemContainers().get(i).getRectangle());
+                        FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getItemContainers().get(i).getLabel());
+                        ((ItemContainer) item.getValue()).getItemContainers().remove(i);
+                    }
+                }
+                if (((ItemContainer) item.getValue()).getItems().size() > 0) {
+                    for (int i = ((ItemContainer) item.getValue()).getItems().size()-1; i >= 0; i--) {
+                        FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getItems().get(i).getRectangle());
+                        FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getItems().get(i).getLabel());
+                        ((ItemContainer) item.getValue()).getItems().remove(i);
+                    }
+                }
+                FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getRectangle());
+                FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getLabel());
+                ArrayList<ItemContainer> temp = ((ItemContainer) item.getParent().getValue()).getItemContainers();
+                temp.remove(((ItemContainer) item.getValue()));
+                ((ItemContainer) item.getParent().getValue()).setItemContainers(temp);
+                item.getParent().getChildren().remove(item);
+            } else {
+                FarmVis.getChildren().remove(((Item) item.getValue()).getRectangle());
+                FarmVis.getChildren().remove(((Item) item.getValue()).getLabel());
+                ((ItemContainer) item.getParent().getValue()).removeItem(((Item) item.getValue()));
+                item.getParent().getChildren().remove(item);
+            }
+
+
         }
         System.out.println("onDelete");
     }
+
+    //When user click add Item will allow user to add new Item to the tree
     public void onAddItem() {
         TreeItem<ItemContainer> item = (TreeItem<ItemContainer>) Farm.getSelectionModel().getSelectedItem();
-        if(item != null){
-            Item newitem = new Item("Item",item.getValue().getLocationX()+10,item.getValue().getLocationY()+10,100,50,20);
+        if (item != null) {
+            Item newitem = new Item("Item", item.getValue().getLocationX() + 10, item.getValue().getLocationY() + 10, 100, 50, 20);
             item.getValue().addItem(newitem);
             TreeItem newTreeItem = new TreeItem(newitem);
             item.getChildren().add(newTreeItem);
             addItemToVis(newitem);
         }
-//        System.out.println("onAddItem");
     }
+
+    //When user click add ItemContainer will allow user to add new ItemContainer to the tree
     public void onAddItemContainer() {
         TreeItem<ItemContainer> item = (TreeItem<ItemContainer>) Farm.getSelectionModel().getSelectedItem();
-        if(item != null){
-            ItemContainer newitem = new ItemContainer("Item",item.getValue().getLocationX()+10,item.getValue().getLocationY()+10,100,50,20);
-            item.getValue().addItem(newitem);
-            ItemContainer newitemcontainer = new ItemContainer("Item Container",item.getValue().getLocationX()+10,item.getValue().getLocationY()+10,100,50,20);
+        if (item != null) {
+            ItemContainer newitemcontainer = new ItemContainer("Item Container", item.getValue().getLocationX() + 10, item.getValue().getLocationY() + 10, 100, 50, 20);
+            item.getValue().addItemContainer(newitemcontainer);
             TreeItem newTreeItem = new TreeItem(newitemcontainer);
             item.getChildren().add(newTreeItem);
-            addItemToVis(newitem);
+            addItemToVis(newitemcontainer);
         }
-        // System.out.println("onAddItemContainer");
     }
 
+    //Function for button when clicked drone vist that item or item container
     public void visitItem() {
-        TreeItem<Item> item = (TreeItem<Item>) Farm.getSelectionModel().getSelectedItem();
-        int transition_time = 1;
-
-        TranslateTransition tend = new TranslateTransition(Duration.seconds(transition_time));
-        tend.setToX(item.getValue().getLocationX()-Drone.getX());
-        tend.setToY(item.getValue().getLocationY()-Drone.getY());
-        tend.setAutoReverse(false);
-        SequentialTransition st = new SequentialTransition(Drone, tend);
-        st.play();
-
-
-        System.out.println("visitItem");
+        drone.visitItem(Farm);
     }
 
-    public void ReturnHome(){
-        int transition_time = 1;
-        TranslateTransition tend = new TranslateTransition(Duration.seconds(transition_time));
-        tend.setToX(0);
-        tend.setToY(0);
-        tend.setAutoReverse(false);
-        SequentialTransition st = new SequentialTransition(Drone, tend);
-        st.play();
-
+    //Function for button when clicked returned Drone Home
+    public void returnHome() {
+        drone.returnHome();
     }
 
-    public void transition(int x_cord,int  y_cord,Node Node){
-
-    }
+    //Function for button when clicked scan the farm
     public void scanFarm() {
-        System.out.println("scanFarm");
-        int transition_time = 1;
-        TranslateTransition t1 = new TranslateTransition(Duration.seconds(transition_time));
-        t1.setToX(-220);
-        t1.setToY(-60);
-        t1.setAutoReverse(false);
-        // Drone should now be at (0,0)
-        // Window is 568x682
-        TranslateTransition t2 = new TranslateTransition(Duration.seconds(transition_time));
-        t2.setToX(-220);
-        t2.setToY(540);
-        t2.setAutoReverse(false);
-        TranslateTransition t3 = new TranslateTransition(Duration.seconds(transition_time));
-        t3.setToX(-140);
-        t3.setToY(540);
-        t3.setAutoReverse(false);
-        TranslateTransition t4 = new TranslateTransition(Duration.seconds(transition_time));
-        t4.setToX(-140);
-        t4.setToY(-60);
-        t4.setAutoReverse(false);
-        TranslateTransition t5 = new TranslateTransition(Duration.seconds(transition_time));
-        t5.setToX(-60);
-        t5.setToY(-60);
-        t5.setAutoReverse(false);
-        TranslateTransition t6 = new TranslateTransition(Duration.seconds(transition_time));
-        t6.setToX(-60);
-        t6.setToY(540);
-        t6.setAutoReverse(false);
-        TranslateTransition t7 = new TranslateTransition(Duration.seconds(transition_time));
-        t7.setToX(20);
-        t7.setToY(540);
-        t7.setAutoReverse(false);
-        TranslateTransition t8 = new TranslateTransition(Duration.seconds(transition_time));
-        t8.setToX(20);
-        t8.setToY(-60);
-        t8.setAutoReverse(false);
-        TranslateTransition t9 = new TranslateTransition(Duration.seconds(transition_time));
-        t9.setToX(100);
-        t9.setToY(-60);
-        t9.setAutoReverse(false);
-        TranslateTransition t10 = new TranslateTransition(Duration.seconds(transition_time));
-        t10.setToX(100);
-        t10.setToY(540);
-        t10.setAutoReverse(false);
-        TranslateTransition t11 = new TranslateTransition(Duration.seconds(transition_time));
-        t11.setToX(180);
-        t11.setToY(540);
-        t11.setAutoReverse(false);
-        TranslateTransition t12 = new TranslateTransition(Duration.seconds(transition_time));
-        t12.setToX(180);
-        t12.setToY(-60);
-        t12.setAutoReverse(false);
-        TranslateTransition t13 = new TranslateTransition(Duration.seconds(transition_time));
-        t13.setToX(220);
-        t13.setToY(-60);
-        t13.setAutoReverse(false);
-        TranslateTransition t14 = new TranslateTransition(Duration.seconds(transition_time));
-        t14.setToX(220);
-        t14.setToY(540);
-        t14.setAutoReverse(false);
-        TranslateTransition tend = new TranslateTransition(Duration.seconds(transition_time));
-        tend.setToX(0);
-        tend.setToY(0);
-        tend.setAutoReverse(false);
+        drone.scanFarm();
 
-        SequentialTransition st = new SequentialTransition(Drone, t1, t2, t3, t4, t5, t6, t7, t8, t9, t10, t11, t12, t13, t14, tend);
-        st.play();
 
     }
 }
