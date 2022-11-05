@@ -37,6 +37,20 @@ public class DashboardController implements Initializable {
     private Button addItemContainerButton;
     @FXML
     private ImageView Drone_Image;
+    @FXML
+    private Label item_error;
+    @FXML
+    private Label none_selected;
+    @FXML
+    private RadioButton new_scan;
+    @FXML
+    private RadioButton new_vist;
+    @FXML
+    private RadioButton new_home;
+    @FXML
+    private Button realDrone ;
+    @FXML
+    private Button Virtual_drone;
     private Drone drone;
     @FXML
     private AnchorPane FarmVis;
@@ -51,6 +65,12 @@ public class DashboardController implements Initializable {
         dimensionsButton.setVisible(false);
         locationButton.setVisible(false);
         priceButton.setVisible(false);
+        item_error.setVisible(false);
+        none_selected.setVisible(false);
+        ToggleGroup group = new ToggleGroup();
+        new_vist.setToggleGroup(group);
+        new_scan.setToggleGroup(group);
+        new_home.setToggleGroup(group);
 
         //Created the Different item like Example
         //Root File
@@ -322,15 +342,14 @@ public class DashboardController implements Initializable {
         });
         Optional<ArrayList<String>> result = dialog.showAndWait();
         result.ifPresent(pair -> {
-            if(item.getValue() instanceof ItemContainer){
+            if (item.getValue() instanceof ItemContainer) {
                 FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getRectangle());
                 FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getLabel());
                 ((ItemContainer) item.getValue()).setLength(Float.valueOf(pair.get(0)));
                 ((ItemContainer) item.getValue()).setWidth(Float.valueOf(pair.get(1)));
                 ((ItemContainer) item.getValue()).setHeight(Float.valueOf(pair.get(2)));
                 addItemToVis(((ItemContainer) item.getValue()));
-            }
-            else{
+            } else {
                 FarmVis.getChildren().remove(((Item) item.getValue()).getRectangle());
                 FarmVis.getChildren().remove(((Item) item.getValue()).getLabel());
                 ((Item) item.getValue()).setLength(Float.valueOf(pair.get(0)));
@@ -350,14 +369,14 @@ public class DashboardController implements Initializable {
         if (item != null) {
             if (item.getValue() instanceof ItemContainer) {
                 if (((ItemContainer) item.getValue()).getItemContainers().size() > 0) {
-                    for (int i = ((ItemContainer) item.getValue()).getItemContainers().size()-1; i >= 0; i--) {
+                    for (int i = ((ItemContainer) item.getValue()).getItemContainers().size() - 1; i >= 0; i--) {
                         FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getItemContainers().get(i).getRectangle());
                         FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getItemContainers().get(i).getLabel());
                         ((ItemContainer) item.getValue()).getItemContainers().remove(i);
                     }
                 }
                 if (((ItemContainer) item.getValue()).getItems().size() > 0) {
-                    for (int i = ((ItemContainer) item.getValue()).getItems().size()-1; i >= 0; i--) {
+                    for (int i = ((ItemContainer) item.getValue()).getItems().size() - 1; i >= 0; i--) {
                         FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getItems().get(i).getRectangle());
                         FarmVis.getChildren().remove(((ItemContainer) item.getValue()).getItems().get(i).getLabel());
                         ((ItemContainer) item.getValue()).getItems().remove(i);
@@ -409,7 +428,6 @@ public class DashboardController implements Initializable {
     public void visitItem() {
         drone.visitItem(Farm);
     }
-
     //Function for button when clicked returned Drone Home
     public void returnHome() {
         drone.returnHome();
@@ -421,4 +439,46 @@ public class DashboardController implements Initializable {
 
 
     }
+    //Functionality to run Virtual Drone
+    public void runVirtual() {
+        if(new_scan.isSelected()==false && new_vist.isSelected()==false && new_home.isSelected()==false) {
+            none_selected.setVisible(true);
+        }
+        else {
+
+            if (new_scan.isSelected()) {
+                none_selected.setVisible(false);
+                item_error.setVisible(false);
+                scanFarm();
+                new_scan.setSelected(false);
+            }
+            if (new_vist.isSelected()) {
+                none_selected.setVisible(false);
+
+                if (Farm.getSelectionModel().getSelectedItem() == null) {
+                    item_error.setVisible(true);
+                } else {
+                    visitItem();
+                    item_error.setVisible(false);
+                    new_vist.setSelected(false);
+                }
+            }
+            if (new_home.isSelected()) {
+                none_selected.setVisible(false);
+                item_error.setVisible(false);
+                returnHome();
+                new_home.setSelected(false);
+            }
+        }
+
+    }
+    //Functionally for new Drone IRL
+    public void runReal(){
+
+    }
+
+
+
+
+
 }
