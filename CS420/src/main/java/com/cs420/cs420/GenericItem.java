@@ -4,6 +4,11 @@ import javafx.scene.control.Label;
 import javafx.scene.shape.Rectangle;
 
 public interface GenericItem {
+
+    public float acceptPrice(FarmVisitor visitor);
+
+    public float acceptValue(FarmVisitor visitor);
+
     public String getName();
 
     public void setName(String newName);

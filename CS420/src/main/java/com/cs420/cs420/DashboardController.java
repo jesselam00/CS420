@@ -36,6 +36,12 @@ public class DashboardController implements Initializable {
     @FXML
     private Button addItemContainerButton;
     @FXML
+    private Button marketValueButton;
+    @FXML
+    private Label priceLabel;
+    @FXML
+    private Label valueLabel;
+    @FXML
     private ImageView Drone_Image;
     @FXML
     private Label item_error;
@@ -67,6 +73,9 @@ public class DashboardController implements Initializable {
         priceButton.setVisible(false);
         item_error.setVisible(false);
         none_selected.setVisible(false);
+        marketValueButton.setVisible(false);
+        priceLabel.setVisible(false);
+        valueLabel.setVisible(false);
         ToggleGroup group = new ToggleGroup();
         new_vist.setToggleGroup(group);
         new_scan.setToggleGroup(group);
@@ -161,12 +170,27 @@ public class DashboardController implements Initializable {
         dimensionsButton.setVisible(true);
         locationButton.setVisible(true);
         priceButton.setVisible(true);
+        marketValueButton.setVisible(true);
+        priceLabel.setVisible(true);
+        valueLabel.setVisible(true);
         if (treeItem.getValue() instanceof ItemContainer) {      // ItemContainer
             commandLabel.setText("Item Container Commands");
+            ItemContainer myItemContainer = ((ItemContainer) treeItem.getValue());
+            FarmVisitor visitor = new ConcreteFarmVisitor();
+            float totalPrice = myItemContainer.acceptPrice(visitor);
+            float totalValue = myItemContainer.acceptValue(visitor);
+            priceLabel.setText("Purchase Price: " + ((int) totalPrice));
+            valueLabel.setText("Current Market Value: " + ((int) totalValue));
             addItemButton.setVisible(true);
             addItemContainerButton.setVisible(true);
         } else {     // Item
             commandLabel.setText("Item Commands");
+            Item myItem = ((Item) treeItem.getValue());
+            FarmVisitor visitor = new ConcreteFarmVisitor();
+            float totalPrice = myItem.acceptPrice(visitor);
+            float totalValue = myItem.acceptValue(visitor);
+            priceLabel.setText("Purchase Price: " + ((int) totalPrice));
+            valueLabel.setText("Current Market Value: " + ((int) totalValue));
             addItemButton.setVisible(false);
             addItemContainerButton.setVisible(false);
         }
@@ -180,12 +204,14 @@ public class DashboardController implements Initializable {
                 ItemContainer temp = (ItemContainer) item.getValue();
                 System.out.println(" Name of Item Container: " + temp.getName());
                 System.out.println(" Price of Item Container: " + temp.getPrice());
+                System.out.println(" Value of Item Container: " + temp.getValue());
                 System.out.println(" Items in Container: " + temp.getItems());
                 System.out.println(" Item Containers in Container: " + temp.getItemContainers());
             } else {
                 Item temp = (Item) item.getValue();
                 System.out.println(" Name of Item: " + temp.getName());
                 System.out.println(" Price of Item: " + temp.getPrice());
+                System.out.println(" Value of Item: " + temp.getValue());
             }
 
         }
@@ -297,6 +323,19 @@ public class DashboardController implements Initializable {
                 Farm.refresh();
             }
 
+        }
+        if (item.getValue() instanceof ItemContainer) {      // ItemContainer
+            commandLabel.setText("Item Container Commands");
+            ItemContainer myItemContainer = ((ItemContainer) item.getValue());
+            FarmVisitor visitor = new ConcreteFarmVisitor();
+            float totalPrice = myItemContainer.acceptPrice(visitor);
+            priceLabel.setText("Purchase Price: " + ((int) totalPrice));
+        } else {     // Item
+            commandLabel.setText("Item Commands");
+            Item myItem = ((Item) item.getValue());
+            FarmVisitor visitor = new ConcreteFarmVisitor();
+            float totalPrice = myItem.acceptPrice(visitor);
+            priceLabel.setText("Purchase Price: " + ((int) totalPrice));
         }
     }
 
@@ -421,6 +460,39 @@ public class DashboardController implements Initializable {
             TreeItem newTreeItem = new TreeItem(newitemcontainer);
             item.getChildren().add(newTreeItem);
             addItemToVis(newitemcontainer);
+        }
+    }
+
+    public void onChangeMarketValue() {
+        TreeItem item = (TreeItem) Farm.getSelectionModel().getSelectedItem();
+        TextInputDialog value = new TextInputDialog(("$") + "Enter new Value");
+        value.setHeaderText("Enter new Value ($):");
+        value.showAndWait();
+        if (item != null) {
+            if (value.getResult() != null) {
+                if (item.getValue() instanceof ItemContainer) {
+                    ItemContainer temp = (ItemContainer) item.getValue();
+                    temp.setValue(Float.valueOf(value.getResult()));
+                } else {
+                    Item temp = (Item) item.getValue();
+                    temp.setValue(Float.valueOf(value.getResult()));
+                }
+                Farm.refresh();
+            }
+
+        }
+        if (item.getValue() instanceof ItemContainer) {      // ItemContainer
+            commandLabel.setText("Item Container Commands");
+            ItemContainer myItemContainer = ((ItemContainer) item.getValue());
+            FarmVisitor visitor = new ConcreteFarmVisitor();
+            float totalValue = myItemContainer.acceptValue(visitor);
+            valueLabel.setText("Current Market Value: " + ((int) totalValue));
+        } else {     // Item
+            commandLabel.setText("Item Commands");
+            Item myItem = ((Item) item.getValue());
+            FarmVisitor visitor = new ConcreteFarmVisitor();
+            float totalValue = myItem.acceptValue(visitor);
+            valueLabel.setText("Current Market Value: " + ((int) totalValue));
         }
     }
 

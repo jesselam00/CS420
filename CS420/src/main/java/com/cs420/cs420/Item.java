@@ -13,6 +13,7 @@ public class Item implements GenericItem{
     }
     private String name = "New";
     private float price = 0;
+    private float value = 0;
     //Location X is the
     private int location_x = 0;
     private int location_y = 0;
@@ -38,6 +39,18 @@ public class Item implements GenericItem{
         this.label.setText(this.name);
         this.rectangle.setFill(Color.color(new Random().nextDouble(0,1.0),new Random().nextDouble(0,1.0),new Random().nextDouble(0,1.0),0.2));
         this.rectangle.setStroke(Color.color(0,0,0,1.0));
+        this.price = new Random().nextInt(100,1000);
+        this.value = new Random().nextInt(100,1000);
+    }
+
+    @Override
+    public float acceptPrice(FarmVisitor visitor){
+        return visitor.visitPrice(this);
+    }
+
+    @Override
+    public float acceptValue(FarmVisitor visitor){
+        return visitor.visitValue(this);
     }
 
 
@@ -112,6 +125,10 @@ public class Item implements GenericItem{
     @Override
     public void setHeight(float newHeight){
         this.height=newHeight;
+    }
+    public float getValue() { return this.value; }
+    public void setValue(float newValue) {
+        this.value = newValue;
     }
 
     // JavaFX rectangle associated with item
