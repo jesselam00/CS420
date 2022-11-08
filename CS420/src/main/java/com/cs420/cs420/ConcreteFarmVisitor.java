@@ -40,7 +40,6 @@ public class ConcreteFarmVisitor implements FarmVisitor {
     public float visitValue(ItemContainer itemContainer){
         // sum prices of items in container
         float sum=0;
-        sum = sum + itemContainer.getValue();
         int length=itemContainer.getItems().size();
         for (int i = 0; i < length; i++){
             sum = sum + itemContainer.getItems().get(i).getValue();

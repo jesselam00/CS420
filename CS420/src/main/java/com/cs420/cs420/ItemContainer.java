@@ -38,7 +38,7 @@ public class ItemContainer implements GenericItem{
         this.rectangle.setFill(Color.color(new Random().nextDouble(0,1.0),new Random().nextDouble(0,1.0),new Random().nextDouble(0,1.0),0.2));
         this.rectangle.setStroke(Color.color(0,0,0,1.0));
         this.price = new Random().nextInt(100,1000);
-        this.value = new Random().nextInt(100,1000);
+        this.value = 0;
     }
 
     @Override
