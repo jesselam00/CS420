@@ -11,7 +11,7 @@ import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-public class Drone {
+public class droneAnimation implements Target {
     private ArrayList<TranslateTransition> transitions = new ArrayList<TranslateTransition>();
     private SequentialTransition st;
     private ImageView drone = null;
@@ -20,7 +20,7 @@ public class Drone {
 
 
     // Constructor
-    public Drone(ImageView Drone){
+    public droneAnimation(ImageView Drone){
         this.drone = Drone;
         if(drone != null){
             this.x_offset = drone.getX();
@@ -47,13 +47,14 @@ public class Drone {
    }
 
     // return Home
+    @Override
     public void returnHome(){
         this.st.stop();
         this.clearTransitions();
         this.addTransition(200,60);
         this.runSequence();
     }
-
+    @Override
     public void scanFarm(){
         for (int i = 0; i < 7; i++){
             if (i % 2 == 0) {
@@ -73,6 +74,7 @@ public class Drone {
     }
 
     // Visit Item
+    @Override
     public void visitItem(TreeView farm){
         TreeItem item = (TreeItem) farm.getSelectionModel().getSelectedItem();
         if(item.getValue() instanceof ItemContainer){

@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cs420.cs420.DashboardController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.cs420.cs420.DashboardController">
     <children>
         <Label layoutX="458.0" prefHeight="45.0" prefWidth="184.0" style="-fx-alignment: center;" text="Farm Dashboard">
             <font>
@@ -72,6 +72,7 @@
                                         <Button fx:id="realDrone" layoutX="209.0" layoutY="137.0" mnemonicParsing="false" onAction="#runReal" text="Launch Drone    " />
                                         <Label fx:id="item_error" layoutX="101.0" layoutY="115.0" prefHeight="17.0" prefWidth="209.0" text="Please Select an Item / Item Container" />
                                         <Label fx:id="none_selected" layoutX="111.0" layoutY="115.0" prefHeight="17.0" prefWidth="209.0" text="Please Select an Option" />
+                                        <Button fx:id="panic_button" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#onPanic" text="Kill Drone" />
                                     </children>
                                 </AnchorPane>
                             </items>

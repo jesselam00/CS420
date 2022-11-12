@@ -1,4 +1,5 @@
 package com.cs420.cs420;
+import com.cs420.cs420.jdrone.control.physical.tello.TelloDrone;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -8,6 +9,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Pair;
+
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -57,12 +60,19 @@ public class DashboardController implements Initializable {
     private Button realDrone ;
     @FXML
     private Button Virtual_drone;
-    private Drone drone;
+    @FXML
+    private Button panic_button;
+
+    private droneAnimation drone;
+
+    private droneIRL drone_real;
+
     @FXML
     private AnchorPane FarmVis;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        drone_real = droneIRL.getInstance();
         commandLabel.setVisible(false);
         renameButton.setVisible(false);
         addItemButton.setVisible(false);
@@ -133,7 +143,7 @@ public class DashboardController implements Initializable {
 
         Drone_Image.setX(drone_item.getLocationX());
         Drone_Image.setY(drone_item.getLocationY());
-        drone = new Drone(Drone_Image);
+        drone = new droneAnimation(Drone_Image);
     }
 
     // Given an Item, access its rectangle, set its coordinates and dimensions, and add to visualization
@@ -496,24 +506,19 @@ public class DashboardController implements Initializable {
         }
     }
 
-    //Function for button when clicked drone vist that item or item container
-    public void visitItem() {
-        drone.visitItem(Farm);
-    }
-    //Function for button when clicked returned Drone Home
-    public void returnHome() {
-        drone.returnHome();
-    }
-
-    //Function for button when clicked scan the farm
-    public void scanFarm() {
-        drone.scanFarm();
-
-
+    public void onPanic(){
+        System.out.println("Panic Button pressed. Stopping Drone.");
+        try {
+            drone_real.panic();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
     //Functionality to run Virtual Drone
     public void runVirtual() {
-        if(new_scan.isSelected()==false && new_vist.isSelected()==false && new_home.isSelected()==false) {
+        if(new_scan.isSelected()==false && !new_vist.isSelected() && new_home.isSelected()==false) {
             none_selected.setVisible(true);
         }
         else {
@@ -521,7 +526,7 @@ public class DashboardController implements Initializable {
             if (new_scan.isSelected()) {
                 none_selected.setVisible(false);
                 item_error.setVisible(false);
-                scanFarm();
+                drone.scanFarm();
                 new_scan.setSelected(false);
             }
             if (new_vist.isSelected()) {
@@ -530,7 +535,7 @@ public class DashboardController implements Initializable {
                 if (Farm.getSelectionModel().getSelectedItem() == null) {
                     item_error.setVisible(true);
                 } else {
-                    visitItem();
+                    drone.visitItem(Farm);
                     item_error.setVisible(false);
                     new_vist.setSelected(false);
                 }
@@ -538,7 +543,7 @@ public class DashboardController implements Initializable {
             if (new_home.isSelected()) {
                 none_selected.setVisible(false);
                 item_error.setVisible(false);
-                returnHome();
+                drone.returnHome();
                 new_home.setSelected(false);
             }
         }
@@ -546,11 +551,35 @@ public class DashboardController implements Initializable {
     }
     //Functionally for new Drone IRL
     public void runReal(){
+        Adapter_drone adapterDrone = new Adapter_drone(drone_real, drone);
+        if(new_scan.isSelected()==false && new_vist.isSelected()==false && new_home.isSelected()==false) {
+            none_selected.setVisible(true);
+        } else {
+            if (new_scan.isSelected()) {
+                none_selected.setVisible(false);
+                item_error.setVisible(false);
+                adapterDrone.scanFarm();
+                new_scan.setSelected(false);
+            }
+            if (new_vist.isSelected()) {
+                none_selected.setVisible(false);
+
+                if (Farm.getSelectionModel().getSelectedItem() == null) {
+                    item_error.setVisible(true);
+                } else {
+                    adapterDrone.visitItem(Farm);
+                    item_error.setVisible(false);
+                    new_vist.setSelected(false);
+                }
+            }
+            if (new_home.isSelected()) {
+                none_selected.setVisible(false);
+                item_error.setVisible(false);
+                adapterDrone.returnHome();
+                new_home.setSelected(false);
+            }
+        }
 
     }
-
-
-
-
 
 }
