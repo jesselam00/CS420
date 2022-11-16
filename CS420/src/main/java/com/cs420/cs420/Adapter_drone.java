@@ -15,7 +15,7 @@ public class Adapter_drone implements Target  {
 
 
     public void scanFarm() {
-        droneA.scanFarm();
+        // droneA.scanFarm();
         try{
             droneI.scanFarm();
         } catch (InterruptedException e) {
@@ -25,7 +25,7 @@ public class Adapter_drone implements Target  {
         }
     }
     public void returnHome(){
-        droneA.returnHome();
+        // droneA.returnHome();
         try {
             droneI.returnHome();
         } catch (InterruptedException e) {
@@ -37,7 +37,7 @@ public class Adapter_drone implements Target  {
 
     public void visitItem(TreeView farm){
 
-        droneA.visitItem(farm);
+        // droneA.visitItem(farm);
         try {
             droneI.visitItem(farm);
         } catch (InterruptedException e) {

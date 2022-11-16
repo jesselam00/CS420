@@ -45,6 +45,21 @@ public class droneIRL implements Target {
         this.tello = null;
         this.tello = new TelloDrone();
     }
+
+    private void L_Move() throws InterruptedException, IOException{
+        this.tello.gotoXY(370,0,75);
+        this.tello.turnCCW(90);
+        this.tello.gotoXY(30,0,75);
+        this.tello.turnCCW(90);
+    }
+
+    private void RL_Move() throws InterruptedException, IOException{
+        this.tello.gotoXY(370,0,75);
+        this.tello.turnCW(90);
+        this.tello.gotoXY(30,0,75);
+        this.tello.turnCW(90);
+    }
+
     @Override
     public void scanFarm() throws InterruptedException, IOException{
 
@@ -56,13 +71,22 @@ public class droneIRL implements Target {
                     // -Y is left Tilt, +Y is Right Tilt
                     tello.activateSDK();
                     tello.takeoff();
-                    tello.increaseAltitude(100);
-                    tello.gotoXY(-60,200, 50);
-                    tello.gotoXY(740, 0, 50);
-                    tello.turnCCW(90);
-                    tello.gotoXY(80,0,50);
-                    tello.turnCCW(90);
-                    tello.gotoXY(740, 0, 50);
+                    tello.increaseAltitude(75);
+                    tello.gotoXY(-30,100, 75);
+                    for(int i = 0; i < 4; i++){
+                        try {
+                            L_Move();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        try {
+                            RL_Move();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                    tello.gotoXY(370,0,75);
+                    tello.gotoXY(-340,200,75);
                     tello.land();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
@@ -77,13 +101,13 @@ public class droneIRL implements Target {
         TreeItem item = (TreeItem) farm.getSelectionModel().getSelectedItem();
         if(item.getValue() instanceof ItemContainer){
             ItemContainer temp = (ItemContainer) item.getValue();
-            mid_x = (int) (temp.getLocationX() + temp.getWidth() / 2);
-            mid_y = (int) (temp.getLocationY() + temp.getLength() / 2);
+            mid_x = (int) (temp.getLocationY() + temp.getWidth() / 2)/2;
+            mid_y = (int) (temp.getLocationX() + temp.getLength() / 2)/2;
         }
         else{
             Item temp = (Item) item.getValue();
-            mid_x = (int) (temp.getLocationX() + temp.getWidth() / 2);
-            mid_y = (int) (temp.getLocationY() + temp.getLength() / 2);
+            mid_x = (int) (temp.getLocationY() + temp.getWidth() / 2)/2;
+            mid_y = (int) (temp.getLocationX() + temp.getLength() / 2)/2;
         }
         // Assuming that drone starts at command center
         new Thread(new Runnable() {
@@ -93,9 +117,9 @@ public class droneIRL implements Target {
                     tello.activateSDK();
                     tello.takeoff();
                     tello.increaseAltitude(100);
-                    tello.gotoXY(mid_x - 60, mid_y - 200, 50);
+                    tello.gotoXY(mid_x - 30, mid_y - 100, 75);
                     tello.turnCW(360);
-                    tello.gotoXY(-mid_x, -mid_y, 50);
+                    tello.gotoXY(-mid_x + 30, -mid_y + 100, 75);
                     tello.land();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
