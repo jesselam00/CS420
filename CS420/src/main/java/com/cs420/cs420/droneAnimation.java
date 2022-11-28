@@ -1,5 +1,6 @@
 package com.cs420.cs420;
 
+import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
@@ -7,12 +8,13 @@ import javafx.event.EventHandler;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 public class droneAnimation implements Target {
-    private ArrayList<TranslateTransition> transitions = new ArrayList<TranslateTransition>();
+    private ArrayList transitions = new ArrayList();
     private SequentialTransition st;
     private ImageView drone = null;
     private double x_offset = 0;
@@ -41,8 +43,19 @@ public class droneAnimation implements Target {
         transitions.add(t_temp);
     }
 
+    // Rotation Transitions
+    public void addRotationTransition(double degree){
+        //  TODO: Set speed based on real world speed
+        RotateTransition t_temp = new RotateTransition(Duration.seconds(1), drone);
+        System.out.println("Rotate "+degree+" Degrees.");
+        t_temp.setAxis(Rotate.Z_AXIS);
+        t_temp.setByAngle(degree);
+        t_temp.setAutoReverse(false);
+        transitions.add(t_temp);
+    }
+
    public void clearTransitions(){
-        this.transitions = new ArrayList<TranslateTransition>();
+        this.transitions = new ArrayList();
         this.st = new SequentialTransition(drone);
    }
 
@@ -56,17 +69,26 @@ public class droneAnimation implements Target {
     }
     @Override
     public void scanFarm(){
-        for (int i = 0; i < 7; i++){
+        this.addTransition(0,0);
+        this.addTransition(0,720);
+        this.addRotationTransition(-90);
+        for (int i = 1; i < 7; i++){
             if (i % 2 == 0) {
                 this.addTransition(i * 80, 0);
+                this.addRotationTransition(90);
                 this.addTransition(i * 80, 720);
+                this.addRotationTransition(-90);
             } else{
                 this.addTransition(i * 80, 720);
+                this.addRotationTransition(-90);
                 this.addTransition(i * 80, 0);
+                this.addRotationTransition(90);
             }
         }
         this.addTransition(520,720);
+        this.addRotationTransition(-90);
         this.addTransition(520, 0);
+        this.addRotationTransition(180);
 
         // return home
         this.addTransition(200,60);
@@ -81,21 +103,23 @@ public class droneAnimation implements Target {
             this.st.stop();
             this.clearTransitions();
             this.addTransition(((ItemContainer) item.getValue()).getLocationX() + (((ItemContainer) item.getValue()).getWidth() / 2) - 40, ((ItemContainer) item.getValue()).getLocationY() + (((ItemContainer) item.getValue()).getLength() / 2) - 40);
+            this.addRotationTransition(360);
+            this.addTransition(200,60);
             this.runSequence();
         }
         else{
             this.st.stop();
             this.clearTransitions();
             this.addTransition(((Item) item.getValue()).getLocationX() + (((Item) item.getValue()).getWidth() / 2) - 40, ((Item) item.getValue()).getLocationY() + (((Item) item.getValue()).getLength() / 2) - 40);
+            this.addRotationTransition(360);
+            this.addTransition(200,60);
             this.runSequence();
         }
 
     }
     
     public void runSequence(){
-        for(int i = 0; i < this.transitions.size(); i++){
-            this.st.getChildren().add(i,this.transitions.get(i));
-        }
+        this.st.getChildren().addAll(transitions);
         this.st.play();
         st.setOnFinished(new EventHandler<ActionEvent>() {
             @Override
