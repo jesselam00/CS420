@@ -12,7 +12,6 @@ import java.io.IOException;
 public class MainApp extends Application {
     public Dashboard dashboard = Dashboard.getInstance();
 
-
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Dashboard.class.getResource("dash-scene.fxml"));

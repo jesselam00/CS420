@@ -42,7 +42,6 @@ public class droneIRL implements Target {
 
     public void panic() throws InterruptedException, IOException{
         this.tello.emergencyStop();
-        this.tello = null;
         this.tello = new TelloDrone();
     }
 
@@ -102,12 +101,12 @@ public class droneIRL implements Target {
         if(item.getValue() instanceof ItemContainer){
             ItemContainer temp = (ItemContainer) item.getValue();
             mid_x = (int) (temp.getLocationY() + temp.getWidth() / 2)/2;
-            mid_y = (int) (temp.getLocationX() + temp.getLength() / 2)/2;
+            mid_y = - (int) (temp.getLocationX() + temp.getLength() / 2)/2;
         }
         else{
             Item temp = (Item) item.getValue();
             mid_x = (int) (temp.getLocationY() + temp.getWidth() / 2)/2;
-            mid_y = (int) (temp.getLocationX() + temp.getLength() / 2)/2;
+            mid_y = - (int) (temp.getLocationX() + temp.getLength() / 2)/2;
         }
         // Assuming that drone starts at command center
         new Thread(new Runnable() {
@@ -117,9 +116,9 @@ public class droneIRL implements Target {
                     tello.activateSDK();
                     tello.takeoff();
                     tello.increaseAltitude(100);
-                    tello.gotoXY(mid_x - 30, mid_y - 100, 75);
+                    tello.gotoXY(mid_x - 30, mid_y + 100, 75);
                     tello.turnCW(360);
-                    tello.gotoXY(-mid_x + 30, -mid_y + 100, 75);
+                    tello.gotoXY(-mid_x + 30, -mid_y - 100, 75);
                     tello.land();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
